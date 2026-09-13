@@ -25,7 +25,7 @@ The pipeline runs automatically on pull requests to `develop` or `main`, executi
 - Pytest validation
 
 ## Team Members
-Salim Al-Kizim
-Ryan Hinely
-Amadou Djigo
+Salim Al-Kizim, 
+Ryan Hinely, 
+Amadou Djigo, 
 Jacquis Wright
