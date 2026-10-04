@@ -228,13 +228,6 @@ pass CI before review, and AI-generated tests get extra scrutiny.
 
 ---
 
-## Scope boundaries (documented, not built)
-
-Live integration with DoD systems (TASP, DEERS); production security authorization
-(IL4/IL5, ATO, CAC/PIV); a learned/ML scorer (deferred until labeled synthetic outcomes
-exist — the content-based scorer is the first stage behind the same interface); and
-predictive PCS-demand analytics (a different problem from matching).
-
 ## Team (Team 1)
 
 Lead Architect — Salim Al-Kizim · Interface Designers — Amadou Djigo, Jacquis Wright ·
