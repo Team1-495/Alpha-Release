@@ -1,0 +1,13 @@
+[tool.pytest.ini_options]
+# Make the backend package importable as `app.*` from the repo root.
+pythonpath = ["backend"]
+testpaths = ["backend/tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = ["frontend"]
+
+[tool.ruff.lint]
+# Pyflakes (F), pycodestyle (E/W), isort (I), bugbear (B), pyupgrade (UP).
+select = ["E", "W", "F", "I", "B", "UP"]
