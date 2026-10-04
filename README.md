@@ -3,18 +3,13 @@
 **Release v1.0.** The integrated final release of the TASP Placement & Matching
 platform. It recommends compatible **sponsors** for incoming service members during a
 Permanent Change of Station (PCS), so onboarding is faster and better-matched than the
-current manual process. This release evolves directly from the deployed **Alpha**
-(see *Lineage* below), not a from-scratch rewrite.
+current manual process.
 
-> Educational prototype. Runs entirely on **synthetic data** — no real PII, and no
-> connection to any live DoD system.
+It runs entirely on **synthetic data** — there is no PII and no connection to any live DoD system.
 
 ---
 
-## Lineage — from Alpha to v1.0
-
-This release is a deliberate evolution of the Alpha, preserving continuity rather than
-replacing it:
+## Lineage
 
 - **The Alpha's matching endpoint is retained, deprecated.** The original single-sponsor
   greedy heuristic still lives at `POST /api/v1/pcs/compute-match` (see
@@ -28,14 +23,8 @@ replacing it:
   terminology, and DA-5434 field, then adds the v2 tables the matcher needs
   (interests, `match_recommendations` with score + reasons). v2 additions are marked
   `-- v2:` in the file.
-- **The AI feature grew from greedy to optimal.** Alpha picked one best sponsor per
-  request; v2 scores every pair and assigns the whole cohort optimally under capacity
-  and eligibility constraints (`POST /v1/match`).
 
-### Terminology map (Alpha ↔ v1.0 code)
-
-The canonical schema uses the Alpha's vocabulary; the v2 application code uses the names
-below. They refer to the same concepts.
+### Terminology map
 
 | Alpha / schema term | v2 code term |
 |---|---|
@@ -49,19 +38,12 @@ below. They refer to the same concepts.
 
 ## What's in this Alpha
 
-An end-to-end vertical slice: a synthetic cohort goes in, ranked-and-explained sponsor
-recommendations come out, and a coordinator reviews and approves them.
-
 - **Matching service (the AI feature)** — a transparent content-based scorer plus a
-  capacity- and eligibility-constrained optimizer. Returns a ranked top-3 per newcomer,
-  each with a plain-language reason.
+  capacity- and eligibility-constrained optimizer. Returns a ranked top-3 selection.
 - **FastAPI backend** — auth, profiles, matching, and approvals over HTTP/JSON.
 - **React dashboard** — one screen to run a cohort, review recommendations, and
   approve or override.
 - **CI** — GitHub Actions runs `ruff` lint and the `pytest` suite on every push and PR.
-
-The matching service is the intelligence; a human always makes the final call. The
-service recommends, the coordinator decides.
 
 ---
 
@@ -76,8 +58,7 @@ Coordinator ─► React Dashboard ──HTTP/JSON──► FastAPI Backend
 
 In dev, tests, and CI the backend uses an in-memory store seeded with synthetic
 profiles, so nothing external is required to run it. `db/schema.sql` is the canonical
-PostgreSQL schema for production; swapping stores means replacing
-`backend/app/store.py`, not the API.
+PostgreSQL schema for production.
 
 ---
 
@@ -103,10 +84,7 @@ of any scoring function. `test_scorer.py::test_gender_is_never_scored` enforces 
 
 **Stage 2 — Constrained assignment.** Sponsors are assigned across the whole cohort to
 maximize total compatibility, subject to hard constraints (remaining capacity, and EFMP
-eligibility: an EFMP newcomer may only pair with an EFMP-knowledgeable sponsor). Solved
-as an assignment problem with `scipy.optimize.linear_sum_assignment`. When demand
-exceeds capacity, affected newcomers come back as a structured `unmatched` result
-rather than failing silently.
+eligibility: an EFMP newcomer may only pair with an EFMP-knowledgeable sponsor).
 
 ---
 
@@ -246,8 +224,7 @@ unite/
 AI assistance is used for synthetic data, unit tests, edge cases, and boilerplate
 (FastAPI stubs, React components). Any AI-generated code must be read and understood by
 a developer, goes through the same PR + peer review as any other contribution, must
-pass CI before review, and AI-generated tests get extra scrutiny. Changes to
-fairness/eligibility logic require a second reviewer.
+pass CI before review, and AI-generated tests get extra scrutiny.
 
 ---
 
